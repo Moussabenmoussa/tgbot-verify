@@ -225,9 +225,9 @@ async def verify3_command(update: Update, context: ContextTypes.DEFAULT_TYPE, db
     )
 
     # 使用信号量控制并发
-    semaphore = get_verification_semaphore("spotify_student")
+semaphore = get_verification_semaphore("spotify_student")
 
-    try:
+try:
     async with semaphore:
         verifier = SpotifyVerifier(verification_id)
         result = await asyncio.to_thread(verifier.verify)
@@ -254,6 +254,13 @@ async def verify3_command(update: Update, context: ContextTypes.DEFAULT_TYPE, db
                 f"❌ 认证失败：{result.get('message', '未知错误')}\n\n"
                 f"已退回 {VERIFY_COST} 积分"
             )
+except Exception as e:
+    logger.error("Spotify 验证过程出错: %s", e)
+    db.add_balance(user_id, VERIFY_COST)
+    await processing_msg.edit_text(
+        f"❌ 处理过程中出现错误：{str(e)}\n\n"
+        f"已退回 {VERIFY_COST} 积分"
+    )
 
 
 async def verify4_command(update: Update, context: ContextTypes.DEFAULT_TYPE, db: Database):
