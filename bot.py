@@ -1,7 +1,8 @@
 """Telegram 机器人主程序"""
 import logging
+import threading
 from functools import partial
-
+from flask import Flask
 from telegram.ext import Application, CommandHandler
 
 from config import BOT_TOKEN
@@ -39,11 +40,19 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
 async def error_handler(update: object, context) -> None:
     """全局错误处理"""
     logger.exception("处理更新时发生异常: %s", context.error, exc_info=context.error)
 
+# إعداد Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running"
+
+def run_flask():
+    app.run(host="0.0.0.0", port=10000)
 
 def main():
     """主函数"""
@@ -54,11 +63,11 @@ def main():
     application = (
         Application.builder()
         .token(BOT_TOKEN)
-        .concurrent_updates(True)  # 🔥 关键：启用并发处理多个命令
+        .concurrent_updates(True)  # 启用并发处理多个命令
         .build()
     )
 
-    # 注册用户命令（使用 partial 传递 db 参数）
+    # 注册用户命令
     application.add_handler(CommandHandler("start", partial(start_command, db=db)))
     application.add_handler(CommandHandler("about", partial(about_command, db=db)))
     application.add_handler(CommandHandler("help", partial(help_command, db=db)))
@@ -87,8 +96,12 @@ def main():
     application.add_error_handler(error_handler)
 
     logger.info("机器人启动中...")
-    application.run_polling(drop_pending_updates=True)
 
+    # تشغيل Flask في الخلفية
+    threading.Thread(target=run_flask).start()
+
+    # تشغيل البوت
+    application.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
     main()
