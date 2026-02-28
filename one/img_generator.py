@@ -248,24 +248,44 @@ def generate_html(first_name, last_name, school_id='2565'):
             </div>
         </div>
 
+
+
         <div class="student-card">
-            <div>
-                <div class="info-label">Student Name</div>
-                <div class="info-val">{name}</div>
-            </div>
-            <div>
-                <div class="info-label">PSU ID</div>
-                <div class="info-val">{psu_id}</div>
-            </div>
-            <div>
-                <div class="info-label">Academic Program</div>
-                <div class="info-val">{major}</div>
-            </div>
-            <div>
-                <div class="info-label">Enrollment Status</div>
-                <div class="status-badge">✅ Enrolled</div>
-            </div>
-        </div>
+    <div>
+        <div class="info-label">Student Name</div>
+        <div class="info-val">{name}</div>
+    </div>
+    <div>
+        <div class="info-label">PSU ID</div>
+        <div class="info-val">{psu_id}</div>
+    </div>
+    <div>
+        <div class="info-label">Academic Program</div>
+        <div class="info-val">{major}</div>
+    </div>
+    <div>
+        <div class="info-label">Enrollment Status</div>
+        <div class="status-badge">✅ Enrolled</div>
+    </div>
+    <div>
+        <div class="info-label">Year of Study</div>
+        <div class="info-val">{random.choice(["Freshman","Sophomore","Junior","Senior"])}</div>
+    </div>
+    <div>
+        <div class="info-label">Expiry Date</div>
+        <div class="info-val">2026-12-31</div>
+    </div>
+    <div>
+        <div class="info-label">Photo</div>
+        <img src="student_photo.jpg" width="100" height="120">
+    </div>
+    <div>
+        <div class="info-label">Logo</div>
+        <img src="psu_logo.png" width="50" height="50">
+    </div>
+</div>
+
+
 
         <div style="margin-bottom: 10px; font-size: 12px; color: #666; text-align: right;">
             Data retrieved: <span>{date}</span>
