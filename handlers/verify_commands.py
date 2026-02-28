@@ -262,7 +262,6 @@ except Exception as e:
         f"已退回 {VERIFY_COST} 积分"
     )
 
-
 async def verify4_command(update: Update, context: ContextTypes.DEFAULT_TYPE, db: Database):
     """处理 /verify4 命令 - Bolt.new Teacher（自动获取code版）"""
     user_id = update.effective_user.id
